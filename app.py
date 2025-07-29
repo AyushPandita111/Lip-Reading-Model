@@ -112,33 +112,30 @@ frames , alignments = data.as_numpy_iterator().next()
 len(frames)
 
 sample = data.as_numpy_iterator()
+val = sample.next()
 
-val = sample.next(); val[0]
-
-frames = val[0][1]  # list of arrays
+frames = val[0][1]
 
 processed_frames = []
 for i, frame in enumerate(frames):
-    frame = np.squeeze(frame)  # (1,1,1) -> (1,1) or (H,W,C)
+    frame = np.squeeze(frame)  # remove singleton dimension → (46, 140)
+
     
-    # Ensure dtype is uint8
     if frame.dtype != np.uint8:
         frame = np.clip(frame * 255, 0, 255).astype(np.uint8)
 
-    # Resize to a usable dimension (e.g. 128x128)
+ 
     if frame.ndim == 2:
-        frame = cv2.resize(frame, (128, 128))  # grayscale
-    elif frame.ndim == 3 and frame.shape[2] in [1, 3]:
-        frame = cv2.resize(frame, (128, 128))
-        if frame.shape[2] == 1:
-            frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)  # convert to RGB
+        pass  
+    elif frame.ndim == 3 and frame.shape[2] == 1:
+        frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)  
     else:
         print(f"Skipping invalid frame {i} with shape: {frame.shape}")
         continue
 
     processed_frames.append(frame)
 
-# Save as gif
+
 imageio.mimsave('./animation.gif', processed_frames, fps=10)
 
 
