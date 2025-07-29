@@ -115,6 +115,6 @@ sample = data.as_numpy_iterator()
 
 val = sample.next(); val[0]
 
-imageio.
+imageio.mimsave('./animation.gif', val[0][0], fps=10)
 
 
