@@ -139,3 +139,7 @@ for i, frame in enumerate(frames):
 imageio.mimsave('./animation.gif', processed_frames, fps=10)
 
 
+plt.imshow(val[0][0][35])
+tf.strings.reduce_join([num_to_char(word) for word in val[1][0]])
+
+
